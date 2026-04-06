@@ -25,7 +25,7 @@ body {
   color: var(--text);
 }
 
-/* 🔥 TOOLBAR */
+/* 🔥 TOOLBAR ESTILO APP */
 .toolbar {
   background: var(--primary);
   color: white;
@@ -33,26 +33,28 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .toolbar img {
-  width: 36px;
+  width: 40px;
 }
 
-.toolbar h1 {
+.toolbar h2 {
   font-size: 18px;
   margin: 0;
+  font-weight: 600;
 }
 
-/* CONTAINER */
 .container {
   max-width: 650px;
   margin: auto;
   padding: 15px;
 }
 
-/* CARDS */
 .card {
   background: var(--card);
   padding: 16px;
@@ -90,25 +92,28 @@ input, select {
   .full { grid-column: span 2; }
 }
 
-/* ✍️ ASSINATURA */
+/* 🔥 CANVAS MELHORADO */
 .canvas-box {
   position: relative;
 }
 
 canvas {
+  border: 2px dashed #000;
   width: 100%;
   height: 180px;
   border-radius: 8px;
   background: #fff;
+  touch-action: none;
 }
 
 /* 🔥 LINHA DE ASSINATURA */
 .linha-assinatura {
   position: absolute;
-  bottom: 30px;
-  left: 10px;
-  right: 10px;
-  border-bottom: 2px solid #000;
+  bottom: 40px;
+  left: 5%;
+  width: 90%;
+  height: 2px;
+  background: #000;
   pointer-events: none;
 }
 
@@ -141,7 +146,7 @@ canvas {
 <!-- 🔥 TOOLBAR -->
 <div class="toolbar">
   <img src="https://i.imgur.com/d4DRK0v.png">
-  <h1>Justificativa</h1>
+  <h2>Justificativa de Servidor</h2>
 </div>
 
 <div class="container">
@@ -203,7 +208,6 @@ canvas {
     <input id="dataReposicao" placeholder="Data reposição" class="hidden">
   </div>
 
-  <!-- ✍️ ASSINATURA -->
   <div class="card">
     <label>Assinatura</label>
 
@@ -243,26 +247,23 @@ function resizeCanvas() {
   const ratio = window.devicePixelRatio || 1;
   canvas.width = canvas.offsetWidth * ratio;
   canvas.height = canvas.offsetHeight * ratio;
-
   ctx.setTransform(1,0,0,1,0,0);
   ctx.scale(ratio, ratio);
 
-  desenharLinha(); // 🔥 mantém a linha no canvas também
+  desenharLinha(); // 🔥 redesenha linha
 }
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
 
-// 🔥 DESENHAR LINHA REAL NO CANVAS
 function desenharLinha() {
   ctx.beginPath();
-  ctx.moveTo(10, 140);
-  ctx.lineTo(canvas.offsetWidth - 10, 140);
+  ctx.moveTo(canvas.width * 0.05 / (window.devicePixelRatio||1), 140);
+  ctx.lineTo(canvas.width * 0.95 / (window.devicePixelRatio||1), 140);
   ctx.lineWidth = 2;
   ctx.strokeStyle = "#000";
   ctx.stroke();
 }
 
-desenharLinha();
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
 let desenhando = false;
 
@@ -313,9 +314,13 @@ canvas.addEventListener("touchend", () => desenhando = false);
 
 function limpar() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  desenharLinha(); // 🔥 mantém a linha após limpar
+  desenharLinha();
 }
 
+// iniciar linha
+desenharLinha();
+
+// resto permanece igual
 function getAssinatura() {
   return canvas.toDataURL("image/png");
 }
@@ -328,7 +333,6 @@ function getArquivoBase64(file) {
   });
 }
 
-// ENVIAR
 async function enviar() {
 
   document.getElementById("loading").style.display = "block";
@@ -356,7 +360,7 @@ async function enviar() {
       comprovante: comprovante
     };
 
-    const resposta = await fetch("SEU_LINK_AQUI", {
+    const resposta = await fetch("https://script.google.com/macros/s/AKfycbzpXILtVdVK19DE8EI_MHdrCqlBtLGj_6_ZpXvYifKLByyKD3QIbegsktVhZyxbb9BCig/exec", {
       method: "POST",
       body: new URLSearchParams({
         data: JSON.stringify(dados)
