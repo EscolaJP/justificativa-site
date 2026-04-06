@@ -308,12 +308,11 @@ async function enviar() {
       comprovante: comprovante
     };
 
-    const resposta = await fetch("https://script.google.com/macros/s/AKfycby_TfNn_HhK8tjq9dCL_h0Fvsi-HvvtlSkLxNJOKGTtJDeju4NgupihwgLZNnQnOWQg9Q/exec", {
+    const resposta = await fetch("https://script.google.com/macros/s/AKfycbzpXILtVdVK19DE8EI_MHdrCqlBtLGj_6_ZpXvYifKLByyKD3QIbegsktVhZyxbb9BCig/exec", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(dados)
+      body: new URLSearchParams({
+  data: JSON.stringify(dados)
+})
     });
 
     const json = await resposta.json();
