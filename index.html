@@ -332,7 +332,14 @@ async function enviar() {
     body: JSON.stringify(dados)
   });
 
-  const url = await resposta.text();
+  const json = await resposta.json();
+
+if (json.status === "ok") {
+  alert("Documento gerado!");
+  window.open(json.url, "_blank");
+} else {
+  alert("Erro: " + json.mensagem);
+}
 
   document.getElementById("loading").style.display = "none";
 
