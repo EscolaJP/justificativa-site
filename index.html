@@ -7,46 +7,33 @@
 
 <title>Justificativa</title>
 
+<!-- 🔥 PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2e7d32">
+
 <style>
 :root {
   --primary: #2e7d32;
   --bg: #eef2f5;
   --card: #ffffff;
   --border: #dcdcdc;
-  --text: #2b2b2b;
 }
-
-* { box-sizing: border-box; }
 
 body {
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: Arial;
   background: var(--bg);
   margin: 0;
-  color: var(--text);
 }
 
-/* 🔥 TOOLBAR ESTILO APP */
+/* 🔥 TOOLBAR */
 .toolbar {
   background: var(--primary);
-  color: white;
+  color: #fff;
   padding: 14px;
   display: flex;
   align-items: center;
   gap: 10px;
   box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.toolbar img {
-  width: 40px;
-}
-
-.toolbar h2 {
-  font-size: 18px;
-  margin: 0;
-  font-weight: 600;
 }
 
 .container {
@@ -56,18 +43,10 @@ body {
 }
 
 .card {
-  background: var(--card);
+  background: white;
   padding: 16px;
   border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
   margin-bottom: 15px;
-}
-
-label {
-  font-size: 14px;
-  font-weight: 600;
-  margin-top: 10px;
-  display: block;
 }
 
 input, select {
@@ -76,66 +55,41 @@ input, select {
   margin-top: 6px;
   border-radius: 8px;
   border: 1px solid var(--border);
-  font-size: 14px;
 }
 
 .hidden { display: none; }
-
-.grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-}
-
-@media (min-width: 600px) {
-  .grid { grid-template-columns: 1fr 1fr; }
-  .full { grid-column: span 2; }
-}
-
-/* 🔥 CANVAS MELHORADO */
-.canvas-box {
-  position: relative;
-}
 
 canvas {
   border: 2px dashed #000;
   width: 100%;
   height: 180px;
-  border-radius: 8px;
   background: #fff;
-  touch-action: none;
-}
-
-/* 🔥 LINHA DE ASSINATURA */
-.linha-assinatura {
-  position: absolute;
-  bottom: 40px;
-  left: 5%;
-  width: 90%;
-  height: 2px;
-  background: #000;
-  pointer-events: none;
 }
 
 .btn {
   width: 100%;
   padding: 14px;
-  margin-top: 12px;
-  border-radius: 8px;
   border: none;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.btn-primary {
+  border-radius: 8px;
   background: var(--primary);
-  color: white;
+  color: #fff;
+  font-weight: bold;
 }
 
-.loading {
-  text-align: center;
-  display: none;
-  margin-top: 10px;
+/* 🔥 LOADING FULL SCREEN */
+.overlay {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.6);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+  color:#fff;
+  font-size:18px;
 }
 </style>
 
@@ -143,87 +97,78 @@ canvas {
 
 <body>
 
-<!-- 🔥 TOOLBAR -->
 <div class="toolbar">
-  <img src="https://i.imgur.com/d4DRK0v.png">
-  <h2>Justificativa de Servidor</h2>
+  <img src="https://i.imgur.com/d4DRK0v.png" width="40">
+  <b>Justificativa de Servidor</b>
 </div>
 
 <div class="container">
 
-  <div class="card">
-    <label>Seu Nome</label>
-    <input id="nome">
+<div class="card">
+<input id="nome" placeholder="Nome completo" required>
+<select id="temMatricula" required>
+<option value="">Possui matrícula?</option>
+<option value="sim">Sim</option>
+<option value="nao">Não</option>
+</select>
 
-    <label>Possui matrícula?</label>
-    <select id="temMatricula">
-      <option value="">Selecione</option>
-      <option value="sim">Sim</option>
-      <option value="nao">Não</option>
-    </select>
+<input id="matricula" placeholder="Matrícula" class="hidden">
 
-    <input id="matricula" placeholder="Matrícula" class="hidden">
+<input id="cargo" placeholder="Cargo" required>
+</div>
 
-    <label>Seu Cargo</label>
-    <input id="cargo">
-  </div>
+<div class="card">
+<input id="rua" placeholder="Rua" required>
+<input id="numero" placeholder="Número" required>
+<input id="bairro" placeholder="Bairro" required>
+</div>
 
-  <div class="card grid">
-    <input id="rua" placeholder="Rua">
-    <input id="numero" placeholder="Número">
-    <input id="bairro" placeholder="Bairro" class="full">
-  </div>
+<div class="card">
+<input id="dataAusencia" placeholder="Data(s) de ausência" required>
 
-  <div class="card">
-    <input id="dataAusencia" placeholder="Data(s) de ausência">
+<select id="motivo" required>
+<option value="">Motivo</option>
+<option>Doença</option>
+<option>Atestado Médico</option>
+<option>Consulta Médica</option>
+<option>Outro</option>
+</select>
 
-    <select id="motivo">
-      <option value="">Motivo</option>
-      <option>Doença</option>
-      <option>Atestado Médico</option>
-      <option>Consulta Médica</option>
-      <option>Outro</option>
-    </select>
+<input id="outroMotivo" placeholder="Outro motivo" class="hidden">
+</div>
 
-    <input id="outroMotivo" placeholder="Descreva o motivo" class="hidden">
-  </div>
+<div class="card">
+<select id="temComprovante" required>
+<option value="">Anexar comprovante?</option>
+<option value="nao">Não</option>
+<option value="sim">Sim</option>
+</select>
 
-  <div class="card">
-    <select id="temComprovante">
-      <option value="">Anexar comprovante?</option>
-      <option value="nao">Não</option>
-      <option value="sim">Sim</option>
-    </select>
+<input type="file" id="arquivoComprovante" class="hidden">
+</div>
 
-    <input type="file" id="arquivoComprovante" class="hidden">
-  </div>
+<div class="card">
+<select id="reposicao" required>
+<option value="">Reposição?</option>
+<option value="nao">Não</option>
+<option value="sim">Sim</option>
+</select>
 
-  <div class="card">
-    <select id="reposicao">
-      <option value="">Deseja repor?</option>
-      <option value="nao">Não</option>
-      <option value="sim">Sim</option>
-    </select>
+<input id="dataReposicao" placeholder="Data reposição" class="hidden">
+</div>
 
-    <input id="dataReposicao" placeholder="Data reposição" class="hidden">
-  </div>
+<div class="card">
+<b>Assinatura</b>
+<canvas id="canvas"></canvas>
+<button onclick="limpar()">Limpar</button>
+</div>
 
-  <div class="card">
-    <label>Assinatura</label>
-
-    <div class="canvas-box">
-      <canvas id="canvas"></canvas>
-      <div class="linha-assinatura"></div>
-    </div>
-
-    <button class="btn" onclick="limpar()">Limpar</button>
-  </div>
-
-  <button class="btn btn-primary" onclick="enviar()">Gerar Documento</button>
-
-  <div class="loading" id="loading">Gerando documento...</div>
+<button class="btn" onclick="enviar()">Gerar Documento</button>
 
 </div>
+
+<!-- 🔥 LOADING -->
+<div class="overlay" id="overlay">Gerando documento...</div>
 
 <script>
 // UX
@@ -247,140 +192,99 @@ function resizeCanvas() {
   const ratio = window.devicePixelRatio || 1;
   canvas.width = canvas.offsetWidth * ratio;
   canvas.height = canvas.offsetHeight * ratio;
-  ctx.setTransform(1,0,0,1,0,0);
   ctx.scale(ratio, ratio);
-
-  desenharLinha(); // 🔥 redesenha linha
+  linha();
 }
 
-function desenharLinha() {
+function linha() {
   ctx.beginPath();
-  ctx.moveTo(canvas.width * 0.05 / (window.devicePixelRatio||1), 140);
-  ctx.lineTo(canvas.width * 0.95 / (window.devicePixelRatio||1), 140);
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = "#000";
+  ctx.moveTo(20,140);
+  ctx.lineTo(canvas.width/(window.devicePixelRatio||1)-20,140);
   ctx.stroke();
 }
 
 resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
 
-let desenhando = false;
+let d=false;
 
-function pos(e) {
-  const rect = canvas.getBoundingClientRect();
-  if (e.touches) {
-    return {
-      x: e.touches[0].clientX - rect.left,
-      y: e.touches[0].clientY - rect.top
-    };
+canvas.onmousedown = e => {
+  d=true;
+  ctx.beginPath();
+  ctx.moveTo(e.offsetX,e.offsetY);
+};
+
+canvas.onmousemove = e => {
+  if(!d) return;
+  ctx.lineTo(e.offsetX,e.offsetY);
+  ctx.stroke();
+};
+
+canvas.onmouseup = ()=> d=false;
+
+function limpar(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  linha();
+}
+
+function getAssinatura(){
+  return canvas.toDataURL();
+}
+
+// 🔥 VALIDAÇÃO
+function validar(){
+  if(!nome.value || !cargo.value || !rua.value || !numero.value || !bairro.value || !dataAusencia.value || !motivo.value){
+    alert("Preencha todos os campos");
+    return false;
   }
-  return { x: e.offsetX, y: e.offsetY };
+  return true;
 }
 
-canvas.addEventListener("mousedown", e => {
-  desenhando = true;
-  ctx.beginPath();
-  ctx.moveTo(pos(e).x, pos(e).y);
-});
+// 🔥 ENVIO
+async function enviar(){
 
-canvas.addEventListener("mousemove", e => {
-  if (!desenhando) return;
-  const p = pos(e);
-  ctx.lineWidth = 2;
-  ctx.lineCap = "round";
-  ctx.lineTo(p.x, p.y);
-  ctx.stroke();
-});
+  if(!validar()) return;
 
-canvas.addEventListener("mouseup", () => desenhando = false);
+  document.getElementById("overlay").style.display="flex";
 
-canvas.addEventListener("touchstart", e => {
-  e.preventDefault();
-  desenhando = true;
-  ctx.beginPath();
-  ctx.moveTo(pos(e).x, pos(e).y);
-}, { passive: false });
-
-canvas.addEventListener("touchmove", e => {
-  e.preventDefault();
-  if (!desenhando) return;
-  const p = pos(e);
-  ctx.lineTo(p.x, p.y);
-  ctx.stroke();
-}, { passive: false });
-
-canvas.addEventListener("touchend", () => desenhando = false);
-
-function limpar() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  desenharLinha();
-}
-
-// iniciar linha
-desenharLinha();
-
-// resto permanece igual
-function getAssinatura() {
-  return canvas.toDataURL("image/png");
-}
-
-function getArquivoBase64(file) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.readAsDataURL(file);
-  });
-}
-
-async function enviar() {
-
-  document.getElementById("loading").style.display = "block";
-
-  try {
-
-    let comprovante = null;
-
-    if (arquivoComprovante.files[0]) {
-      comprovante = await getArquivoBase64(arquivoComprovante.files[0]);
-    }
+  try{
 
     const dados = {
-      nome: nome.value,
-      cargo: cargo.value,
-      rua: rua.value,
-      numero: numero.value,
-      bairro: bairro.value,
-      dataAusencia: dataAusencia.value,
-      motivo: motivo.value === "Outro" ? outroMotivo.value : motivo.value,
-      reposicao: reposicao.value,
-      dataReposicao: dataReposicao.value,
-      matricula: matricula.value,
-      assinatura: getAssinatura(),
-      comprovante: comprovante
+      nome:nome.value,
+      cargo:cargo.value,
+      rua:rua.value,
+      numero:numero.value,
+      bairro:bairro.value,
+      dataAusencia:dataAusencia.value,
+      motivo: motivo.value==="Outro"?outroMotivo.value:motivo.value,
+      reposicao:reposicao.value,
+      dataReposicao:dataReposicao.value,
+      matricula:matricula.value,
+      assinatura:getAssinatura()
     };
 
-    const resposta = await fetch("https://script.google.com/macros/s/AKfycbzpXILtVdVK19DE8EI_MHdrCqlBtLGj_6_ZpXvYifKLByyKD3QIbegsktVhZyxbb9BCig/exec", {
-      method: "POST",
-      body: new URLSearchParams({
-        data: JSON.stringify(dados)
-      })
+    const res = await fetch("SEU_WEBAPP_URL_AQUI",{
+      method:"POST",
+      body:new URLSearchParams({data:JSON.stringify(dados)})
     });
 
-    const json = await resposta.json();
+    const json = await res.json();
 
-    if (json.status === "ok") {
-      window.open(json.url, "_blank");
+    if(json.status==="ok"){
+      window.open(json.url);
     } else {
-      alert("Erro: " + json.mensagem);
+      alert("Erro: "+json.mensagem);
     }
 
-  } catch (erro) {
-    alert("Erro ao enviar dados");
-    console.error(erro);
+  }catch(e){
+    alert("Erro ao enviar");
   }
 
-  document.getElementById("loading").style.display = "none";
+  document.getElementById("overlay").style.display="none";
+}
+
+// 🔥 PWA SERVICE WORKER
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("sw.js");
 }
 </script>
 
