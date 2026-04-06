@@ -132,8 +132,8 @@ canvas {
   </div>
 
   <div class="card">
-    <label>Nome</label>
-    <input id="nome">
+    <label>Seu Nome</label>
+    <input id="nome" placeholder="Nome Completo">
 
     <label>Possui matrícula?</label>
     <select id="temMatricula">
@@ -144,21 +144,24 @@ canvas {
 
     <input id="matricula" placeholder="Matrícula" class="hidden">
 
-    <label>Cargo</label>
-    <input id="cargo">
+    <label>Seu Cargo</label>
+    <input id="cargo" placeholder="Ex: Professor, Agente Educacional....">
   </div>
 
   <div class="card grid">
+    <label>Seu Endereço</label> <br>
     <input id="rua" placeholder="Rua">
     <input id="numero" placeholder="Número">
     <input id="bairro" placeholder="Bairro" class="full">
   </div>
 
   <div class="card">
-    <input id="dataAusencia" placeholder="Data(s) de ausência">
+    <label>Data(s) de ausência</label>
+    <input id="dataAusencia" placeholder="Ex: xx/xx/xxxx">
 
+    <label>Qual o Motivo?</label>
     <select id="motivo">
-      <option value="">Motivo</option>
+      <option value="">Selecione</option>
       <option>Doença</option>
       <option>Atestado Médico</option>
       <option>Consulta Médica</option>
@@ -169,8 +172,9 @@ canvas {
   </div>
 
   <div class="card">
+    <label>Anexar Comprovante?</label>
     <select id="temComprovante">
-      <option value="">Anexar comprovante?</option>
+      <option value="">Selecione</option>
       <option value="nao">Não</option>
       <option value="sim">Sim</option>
     </select>
@@ -179,8 +183,9 @@ canvas {
   </div>
 
   <div class="card">
+    <label>Deseja repor?</label>
     <select id="reposicao">
-      <option value="">Deseja repor?</option>
+      <option value="">Selecione</option>
       <option value="nao">Não</option>
       <option value="sim">Sim</option>
     </select>
@@ -189,7 +194,8 @@ canvas {
   </div>
 
   <div class="card">
-    <label>Assinatura</label>
+    <label>Desenhe sua Assinatura</label>
+    <br>
     <canvas id="canvas"></canvas>
     <button class="btn" onclick="limpar()">Limpar</button>
   </div>
