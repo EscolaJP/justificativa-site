@@ -1,135 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
 
-  <!-- viewport normal (GAS ignora às vezes) -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- 🔥 FORÇA VIEWPORT NO APPS SCRIPT -->
-  <script>
-  (function() {
-    let meta = document.querySelector("meta[name=viewport]");
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.name = "viewport";
-      document.head.appendChild(meta);
-    }
-    meta.setAttribute("content",
-      "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no");
-  })();
-  </script>
+<title>Justificativa</title>
 
-  <style>
-    :root {
-      --primary: #2e7d32;
-      --bg: #eef2f5;
-      --card: #ffffff;
-      --border: #dcdcdc;
-      --text: #2b2b2b;
-    }
+<style>
+:root {
+  --primary: #2e7d32;
+  --bg: #eef2f5;
+  --card: #ffffff;
+  --border: #dcdcdc;
+  --text: #2b2b2b;
+}
 
-    * {
-      box-sizing: border-box;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    html, body {
-      width: 100%;
-      overflow-x: hidden;
-    }
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: var(--bg);
+  margin: 0;
+  padding: 15px;
+  color: var(--text);
+}
 
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: var(--bg);
-      margin: 0;
-      padding: 15px;
-      color: var(--text);
-    }
+.container {
+  max-width: 650px;
+  margin: auto;
+}
 
-    .container {
-      max-width: 650px;
-      margin: auto;
-    }
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
 
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
+.header img {
+  width: 50px;
+}
 
-    .header img {
-      width: 50px;
-    }
+.card {
+  background: var(--card);
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  margin-bottom: 15px;
+}
 
-    .card {
-      background: var(--card);
-      padding: 16px;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
-      margin-bottom: 15px;
-    }
+label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 10px;
+  display: block;
+}
 
-    label {
-      font-size: 13px;
-      font-weight: 600;
-      margin-top: 10px;
-      display: block;
-    }
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 15px;
+}
 
-    input, select {
-      width: 100%;
-      padding: 12px;
-      margin-top: 6px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      font-size: 15px;
-    }
+.hidden {
+  display: none;
+}
 
-    .hidden {
-      display: none;
-    }
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
+@media (min-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
 
-    @media (min-width: 600px) {
-      .grid {
-        grid-template-columns: 1fr 1fr;
-      }
+  .full {
+    grid-column: span 2;
+  }
+}
 
-      .full {
-        grid-column: span 2;
-      }
-    }
+canvas {
+  border: 2px dashed #000;
+  width: 100%;
+  height: 180px;
+  border-radius: 8px;
+  background: #fff;
+  touch-action: none;
+}
 
-    canvas {
-      border: 2px dashed #000;
-      width: 100%;
-      height: 180px;
-      border-radius: 8px;
-      background: #fff;
-      touch-action: none;
-    }
+.btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    .btn {
-      width: 100%;
-      padding: 14px;
-      margin-top: 12px;
-      border-radius: 8px;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
 
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-  </style>
+.loading {
+  text-align: center;
+  display: none;
+  margin-top: 10px;
+}
+</style>
+
 </head>
 
 <body>
@@ -206,33 +196,11 @@
 
   <button class="btn btn-primary" onclick="enviar()">Gerar Documento</button>
 
+  <div class="loading" id="loading">Gerando documento...</div>
+
 </div>
 
 <script>
-// 🔥 FORÇA ESCALA MOBILE NO APPS SCRIPT
-function forceMobile() {
-  const scale = window.innerWidth / 980;
-  document.body.style.transform = "scale(" + scale + ")";
-  document.body.style.transformOrigin = "top left";
-  document.body.style.width = (100 / scale) + "%";
-}
-forceMobile();
-window.addEventListener("resize", forceMobile);
-
-// CANVAS
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
-function resizeCanvas() {
-  const ratio = window.devicePixelRatio || 1;
-  canvas.width = canvas.offsetWidth * ratio;
-  canvas.height = canvas.offsetHeight * ratio;
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.scale(ratio, ratio);
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
-
 // UX
 temMatricula.onchange = () =>
   matricula.classList.toggle("hidden", temMatricula.value !== "sim");
@@ -246,7 +214,19 @@ temComprovante.onchange = () =>
 reposicao.onchange = () =>
   dataReposicao.classList.toggle("hidden", reposicao.value !== "sim");
 
-// assinatura
+// CANVAS
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = canvas.offsetWidth * ratio;
+  canvas.height = canvas.offsetHeight * ratio;
+  ctx.scale(ratio, ratio);
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
 let desenhando = false;
 
 function pos(e) {
@@ -297,10 +277,31 @@ canvas.addEventListener("touchend", () => desenhando = false);
 function limpar() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
-</script>
 
-<script>
+// CONVERTER ASSINATURA
+function getAssinatura() {
+  return canvas.toDataURL("image/png");
+}
+
+// CONVERTER ARQUIVO
+function getArquivoBase64(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(file);
+  });
+}
+
+// ENVIAR
 async function enviar() {
+
+  document.getElementById("loading").style.display = "block";
+
+  let comprovante = null;
+
+  if (arquivoComprovante.files[0]) {
+    comprovante = await getArquivoBase64(arquivoComprovante.files[0]);
+  }
 
   const dados = {
     nome: nome.value,
@@ -309,18 +310,25 @@ async function enviar() {
     numero: numero.value,
     bairro: bairro.value,
     dataAusencia: dataAusencia.value,
-    motivo: motivo.value,
+    motivo: motivo.value === "Outro" ? outroMotivo.value : motivo.value,
     reposicao: reposicao.value,
     dataReposicao: dataReposicao.value,
-    matricula: matricula.value
+    matricula: matricula.value,
+    assinatura: getAssinatura(),
+    comprovante: comprovante
   };
 
   const resposta = await fetch("https://script.google.com/macros/s/AKfycbyQi_-PQk20jCWyl7qoy8eCAwMXD-HdawqUKXTbZeRfVNMM0szlKJnbKp3yN0mAnIXmyQ/exec", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify(dados)
   });
 
   const url = await resposta.text();
+
+  document.getElementById("loading").style.display = "none";
 
   alert("Documento gerado!");
   window.open(url, "_blank");
