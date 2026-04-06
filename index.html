@@ -22,25 +22,37 @@ body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background: var(--bg);
   margin: 0;
-  padding: 15px;
   color: var(--text);
 }
 
+/* 🔥 TOOLBAR */
+.toolbar {
+  background: var(--primary);
+  color: white;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.toolbar img {
+  width: 36px;
+}
+
+.toolbar h1 {
+  font-size: 18px;
+  margin: 0;
+}
+
+/* CONTAINER */
 .container {
   max-width: 650px;
   margin: auto;
+  padding: 15px;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.header img { width: 50px; }
-
+/* CARDS */
 .card {
   background: var(--card);
   padding: 16px;
@@ -50,7 +62,7 @@ body {
 }
 
 label {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   margin-top: 10px;
   display: block;
@@ -62,7 +74,7 @@ input, select {
   margin-top: 6px;
   border-radius: 8px;
   border: 1px solid var(--border);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .hidden { display: none; }
@@ -78,13 +90,26 @@ input, select {
   .full { grid-column: span 2; }
 }
 
+/* ✍️ ASSINATURA */
+.canvas-box {
+  position: relative;
+}
+
 canvas {
-  border: 2px dashed #000;
   width: 100%;
   height: 180px;
   border-radius: 8px;
   background: #fff;
-  touch-action: none;
+}
+
+/* 🔥 LINHA DE ASSINATURA */
+.linha-assinatura {
+  position: absolute;
+  bottom: 30px;
+  left: 10px;
+  right: 10px;
+  border-bottom: 2px solid #000;
+  pointer-events: none;
 }
 
 .btn {
@@ -113,12 +138,13 @@ canvas {
 
 <body>
 
-<div class="container">
+<!-- 🔥 TOOLBAR -->
+<div class="toolbar">
+  <img src="https://i.imgur.com/d4DRK0v.png">
+  <h1>Justificativa</h1>
+</div>
 
-  <div class="header">
-    <img src="https://i.imgur.com/d4DRK0v.png">
-    <h2>Justificativa de Servidor</h2>
-  </div>
+<div class="container">
 
   <div class="card">
     <label>Seu Nome</label>
@@ -177,9 +203,15 @@ canvas {
     <input id="dataReposicao" placeholder="Data reposição" class="hidden">
   </div>
 
+  <!-- ✍️ ASSINATURA -->
   <div class="card">
     <label>Assinatura</label>
-    <canvas id="canvas"></canvas>
+
+    <div class="canvas-box">
+      <canvas id="canvas"></canvas>
+      <div class="linha-assinatura"></div>
+    </div>
+
     <button class="btn" onclick="limpar()">Limpar</button>
   </div>
 
@@ -211,11 +243,26 @@ function resizeCanvas() {
   const ratio = window.devicePixelRatio || 1;
   canvas.width = canvas.offsetWidth * ratio;
   canvas.height = canvas.offsetHeight * ratio;
+
   ctx.setTransform(1,0,0,1,0,0);
   ctx.scale(ratio, ratio);
+
+  desenharLinha(); // 🔥 mantém a linha no canvas também
 }
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
+
+// 🔥 DESENHAR LINHA REAL NO CANVAS
+function desenharLinha() {
+  ctx.beginPath();
+  ctx.moveTo(10, 140);
+  ctx.lineTo(canvas.offsetWidth - 10, 140);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "#000";
+  ctx.stroke();
+}
+
+desenharLinha();
 
 let desenhando = false;
 
@@ -266,6 +313,7 @@ canvas.addEventListener("touchend", () => desenhando = false);
 
 function limpar() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  desenharLinha(); // 🔥 mantém a linha após limpar
 }
 
 function getAssinatura() {
@@ -280,7 +328,7 @@ function getArquivoBase64(file) {
   });
 }
 
-// 🔥 FUNÇÃO FINAL CORRIGIDA
+// ENVIAR
 async function enviar() {
 
   document.getElementById("loading").style.display = "block";
@@ -308,11 +356,11 @@ async function enviar() {
       comprovante: comprovante
     };
 
-    const resposta = await fetch("https://script.google.com/macros/s/AKfycbzpXILtVdVK19DE8EI_MHdrCqlBtLGj_6_ZpXvYifKLByyKD3QIbegsktVhZyxbb9BCig/exec", {
+    const resposta = await fetch("SEU_LINK_AQUI", {
       method: "POST",
       body: new URLSearchParams({
-  data: JSON.stringify(dados)
-})
+        data: JSON.stringify(dados)
+      })
     });
 
     const json = await resposta.json();
