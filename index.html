@@ -7,7 +7,6 @@
 
 <title>Justificativa</title>
 
-<!-- 🔥 PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2e7d32">
 
@@ -19,13 +18,15 @@
   --border: #dcdcdc;
 }
 
+* { box-sizing: border-box; }
+
 body {
   font-family: Arial;
   background: var(--bg);
   margin: 0;
 }
 
-/* 🔥 TOOLBAR */
+/* TOOLBAR */
 .toolbar {
   background: var(--primary);
   color: #fff;
@@ -36,6 +37,7 @@ body {
   box-shadow: 0 3px 10px rgba(0,0,0,0.2);
 }
 
+/* CONTAINER */
 .container {
   max-width: 650px;
   margin: auto;
@@ -59,13 +61,16 @@ input, select {
 
 .hidden { display: none; }
 
+/* CANVAS */
 canvas {
   border: 2px dashed #000;
   width: 100%;
   height: 180px;
   background: #fff;
+  touch-action: none;
 }
 
+/* BOTÃO */
 .btn {
   width: 100%;
   padding: 14px;
@@ -76,7 +81,7 @@ canvas {
   font-weight: bold;
 }
 
-/* 🔥 LOADING FULL SCREEN */
+/* OVERLAY */
 .overlay {
   position: fixed;
   top:0;
@@ -105,28 +110,27 @@ canvas {
 <div class="container">
 
 <div class="card">
-<input id="nome" placeholder="Nome completo" required>
-<select id="temMatricula" required>
+<input id="nome" placeholder="Nome completo">
+<select id="temMatricula">
 <option value="">Possui matrícula?</option>
 <option value="sim">Sim</option>
 <option value="nao">Não</option>
 </select>
 
 <input id="matricula" placeholder="Matrícula" class="hidden">
-
-<input id="cargo" placeholder="Cargo" required>
+<input id="cargo" placeholder="Cargo">
 </div>
 
 <div class="card">
-<input id="rua" placeholder="Rua" required>
-<input id="numero" placeholder="Número" required>
-<input id="bairro" placeholder="Bairro" required>
+<input id="rua" placeholder="Rua">
+<input id="numero" placeholder="Número">
+<input id="bairro" placeholder="Bairro">
 </div>
 
 <div class="card">
-<input id="dataAusencia" placeholder="Data(s) de ausência" required>
+<input id="dataAusencia" placeholder="Data(s) de ausência">
 
-<select id="motivo" required>
+<select id="motivo">
 <option value="">Motivo</option>
 <option>Doença</option>
 <option>Atestado Médico</option>
@@ -138,7 +142,7 @@ canvas {
 </div>
 
 <div class="card">
-<select id="temComprovante" required>
+<select id="temComprovante">
 <option value="">Anexar comprovante?</option>
 <option value="nao">Não</option>
 <option value="sim">Sim</option>
@@ -148,7 +152,7 @@ canvas {
 </div>
 
 <div class="card">
-<select id="reposicao" required>
+<select id="reposicao">
 <option value="">Reposição?</option>
 <option value="nao">Não</option>
 <option value="sim">Sim</option>
@@ -167,7 +171,6 @@ canvas {
 
 </div>
 
-<!-- 🔥 LOADING -->
 <div class="overlay" id="overlay">Gerando documento...</div>
 
 <script>
@@ -192,59 +195,109 @@ function resizeCanvas() {
   const ratio = window.devicePixelRatio || 1;
   canvas.width = canvas.offsetWidth * ratio;
   canvas.height = canvas.offsetHeight * ratio;
+
+  ctx.setTransform(1,0,0,1,0,0);
   ctx.scale(ratio, ratio);
-  linha();
+
+  desenharLinha();
 }
 
-function linha() {
+function desenharLinha() {
   ctx.beginPath();
-  ctx.moveTo(20,140);
-  ctx.lineTo(canvas.width/(window.devicePixelRatio||1)-20,140);
+  ctx.moveTo(20, 140);
+  ctx.lineTo(canvas.offsetWidth - 20, 140);
+  ctx.lineWidth = 2;
   ctx.stroke();
 }
 
 resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
-let d=false;
+let desenhando = false;
 
-canvas.onmousedown = e => {
-  d=true;
+function pos(e) {
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: (e.touches ? e.touches[0].clientX : e.clientX) - rect.left,
+    y: (e.touches ? e.touches[0].clientY : e.clientY) - rect.top
+  };
+}
+
+// MOUSE
+canvas.addEventListener("mousedown", e => {
+  desenhando = true;
   ctx.beginPath();
-  ctx.moveTo(e.offsetX,e.offsetY);
-};
+  ctx.moveTo(pos(e).x, pos(e).y);
+});
 
-canvas.onmousemove = e => {
-  if(!d) return;
-  ctx.lineTo(e.offsetX,e.offsetY);
+canvas.addEventListener("mousemove", e => {
+  if (!desenhando) return;
+  const p = pos(e);
+  ctx.lineTo(p.x, p.y);
   ctx.stroke();
-};
+});
 
-canvas.onmouseup = ()=> d=false;
+canvas.addEventListener("mouseup", () => desenhando = false);
+
+// TOUCH (🔥 corrigido)
+canvas.addEventListener("touchstart", e => {
+  e.preventDefault();
+  desenhando = true;
+  ctx.beginPath();
+  ctx.moveTo(pos(e).x, pos(e).y);
+}, { passive:false });
+
+canvas.addEventListener("touchmove", e => {
+  e.preventDefault();
+  if (!desenhando) return;
+  const p = pos(e);
+  ctx.lineTo(p.x, p.y);
+  ctx.stroke();
+}, { passive:false });
+
+canvas.addEventListener("touchend", () => desenhando = false);
 
 function limpar(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  linha();
+  desenharLinha();
 }
 
 function getAssinatura(){
-  return canvas.toDataURL();
+  return canvas.toDataURL("image/png");
 }
 
-// 🔥 VALIDAÇÃO
+// VALIDAÇÃO COMPLETA
 function validar(){
+
   if(!nome.value || !cargo.value || !rua.value || !numero.value || !bairro.value || !dataAusencia.value || !motivo.value){
-    alert("Preencha todos os campos");
+    alert("Preencha todos os campos obrigatórios");
     return false;
   }
+
+  if(motivo.value === "Outro" && !outroMotivo.value){
+    alert("Descreva o motivo");
+    return false;
+  }
+
+  if(reposicao.value === "sim" && !dataReposicao.value){
+    alert("Informe a data de reposição");
+    return false;
+  }
+
+  if(temMatricula.value === "sim" && !matricula.value){
+    alert("Informe a matrícula");
+    return false;
+  }
+
   return true;
 }
 
-// 🔥 ENVIO
+// ENVIO
 async function enviar(){
 
   if(!validar()) return;
 
-  document.getElementById("overlay").style.display="flex";
+  overlay.style.display="flex";
 
   try{
 
@@ -279,10 +332,10 @@ async function enviar(){
     alert("Erro ao enviar");
   }
 
-  document.getElementById("overlay").style.display="none";
+  overlay.style.display="none";
 }
 
-// 🔥 PWA SERVICE WORKER
+// PWA
 if("serviceWorker" in navigator){
   navigator.serviceWorker.register("sw.js");
 }
