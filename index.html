@@ -26,15 +26,44 @@ body {
   margin: 0;
 }
 
-/* TOOLBAR */
+/* TOOLBAR ESTILO ANDROID */
 .toolbar {
-  background: var(--primary);
-  color: #fff;
-  padding: 14px;
+  background: #fff;
+  color: #222;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  gap: 12px;
+  font-size: 17px;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.toolbar img {
+  width: 36px;
+  height: 36px;
+}
+
+
+/* BOTÃO LIMPAR BONITO */
+.btn-limpar {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  background: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-limpar:active {
+  transform: scale(0.97);
+  background: #f5f5f5;
 }
 
 /* CONTAINER */
@@ -103,8 +132,8 @@ canvas {
 <body>
 
 <div class="toolbar">
-  <img src="https://i.imgur.com/d4DRK0v.png" width="40">
-  <b>Justificativa de Servidor</b>
+  <img src="https://i.imgur.com/d4DRK0v.png">
+  <span>Justificativa de Servidor</span>
 </div>
 
 <div class="container">
@@ -164,7 +193,9 @@ canvas {
 <div class="card">
 <b>Assinatura</b>
 <canvas id="canvas"></canvas>
-<button onclick="limpar()">Limpar</button>
+<button class="btn-limpar" onclick="limpar()">
+  Limpar assinatura
+</button>
 </div>
 
 <button class="btn" onclick="enviar()">Gerar Documento</button>
