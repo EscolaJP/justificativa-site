@@ -127,6 +127,14 @@ canvas {
   color:#fff;
   font-size:18px;
 }
+
+label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 10px;
+  display: block;
+}
+
 </style>
 
 </head>
@@ -141,19 +149,23 @@ canvas {
 <div class="container">
 
 <div class="card">
+<label>Seu nome</label>
 <input id="nome" placeholder="Nome completo">
+<label>Possui matrícula?</label>
 <select id="temMatricula">
-<option value="">Possui matrícula?</option>
+<option value="">Selecione</option>
 <option value="sim">Sim</option>
 <option value="nao">Não</option>
 </select>
 
 <input id="matricula" placeholder="Matrícula" class="hidden">
-<input id="cargo" placeholder="Cargo">
+<label>Seu Cargo</label>
+<input id="cargo" placeholder="Ex: Agente Educacional, Professor.....">
 </div>
 
 <div class="card">
-<input id="rua" placeholder="Rua">
+<label>Seu Endereço</label>
+<input id="rua" placeholder="Ex: Travessa Jhonatas Atias">
 <input id="numero" placeholder="Número">
 <input id="bairro" placeholder="Bairro">
 </div>
