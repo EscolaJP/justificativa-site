@@ -376,16 +376,14 @@ async function enviar(){
     };
 
     let comprovanteBase64 = "";
-
-if (temComprovante.value === "sim" && arquivoComprovante.files[0]) {
-  const file = arquivoComprovante.files[0];
-
-  comprovanteBase64 = await new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.readAsDataURL(file);
-  });
-}
+  if (temComprovante.value === "sim" && arquivoComprovante.files[0]) {
+    const file = arquivoComprovante.files[0];
+    comprovanteBase64 = await new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.readAsDataURL(file);
+    });
+  }
 
     const res = await fetch("https://script.google.com/macros/s/AKfycbwFhbbN0jyoNCf9BZ860skkDleLZztTZoVwez2x33ka4-iXl-qWNelQ6Sgk13GjuONSXQ/exec",{
       method:"POST",
