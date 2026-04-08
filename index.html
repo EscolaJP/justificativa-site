@@ -164,17 +164,21 @@ label {
 </div>
 
 <div class="card">
-<label>Seu Endereço</label>
+<label>Rua</label>
 <input id="rua" placeholder="Ex: Travessa Jhonatas Atias">
-<input id="numero" placeholder="Número">
-<input id="bairro" placeholder="Bairro">
+<label>Número</label>
+<input id="numero" placeholder="Ex: 1248">
+<label>Bairro</label>
+<input id="bairro" placeholder="Ex: Nossa Senhora das Graças">
 </div>
 
 <div class="card">
-<input id="dataAusencia" placeholder="Data(s) de ausência">
+<label>Data de Ausência</label>
+<input id="dataAusencia" placeholder="Ex: 01/04/2026">
 
+<label>Motivo da Ausência</label>
 <select id="motivo">
-<option value="">Motivo</option>
+<option value="">Selecione</option>
 <option>Doença</option>
 <option>Atestado Médico</option>
 <option>Consulta Médica</option>
@@ -185,8 +189,9 @@ label {
 </div>
 
 <div class="card">
+<label>Anexar comprovante?</label>
 <select id="temComprovante">
-<option value="">Anexar comprovante?</option>
+<option value="">Selecione</option>
 <option value="nao">Não</option>
 <option value="sim">Sim</option>
 </select>
@@ -195,20 +200,22 @@ label {
 </div>
 
 <div class="card">
+  <label>Desejar Repor?</label>
 <select id="reposicao">
-<option value="">Reposição?</option>
+<option value="">Selecione</option>
 <option value="nao">Não</option>
 <option value="sim">Sim</option>
 </select>
 
-<input id="dataReposicao" placeholder="Data reposição" class="hidden">
+<label id="txtDataReposicao" class="hidden">Sugestão de Data(s) para reposição</label>
+<input id="dataReposicao" placeholder="Ex: 01/04/2026" class="hidden">
 </div>
 
 <div class="card">
-<b>Assinatura</b>
+<label>Assinatura</label> <br>
 <canvas id="canvas"></canvas>
 <button class="btn-limpar" onclick="limpar()">
-  Limpar assinatura
+  Refazer assinatura
 </button>
 </div>
 
@@ -229,9 +236,10 @@ motivo.onchange = () =>
 temComprovante.onchange = () =>
   arquivoComprovante.classList.toggle("hidden", temComprovante.value !== "sim");
 
-reposicao.onchange = () =>
+reposicao.onchange = () => {
   dataReposicao.classList.toggle("hidden", reposicao.value !== "sim");
-
+  txtDataReposicao.classList.toggle("hidden", reposicao.value !== "sim");
+}
 // CANVAS
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
