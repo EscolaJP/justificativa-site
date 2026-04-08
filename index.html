@@ -351,58 +351,63 @@ function validar(){
   return true;
 }
 
-// ENVIO
+// ENVIO https://script.google.com/macros/s/AKfycbwFhbbN0jyoNCf9BZ860skkDleLZztTZoVwez2x33ka4-iXl-qWNelQ6Sgk13GjuONSXQ/exec
 async function enviar(){
 
   if(!validar()) return;
 
-  overlay.style.display="flex";
+  overlay.style.display = "flex";
 
-  try{
+  try {
+
+    let comprovanteBase64 = "";
+
+    if (temComprovante.value === "sim" && arquivoComprovante.files[0]) {
+      const file = arquivoComprovante.files[0];
+
+      comprovanteBase64 = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    }
 
     const dados = {
-      nome:nome.value,
-      cargo:cargo.value,
-      rua:rua.value,
-      numero:numero.value,
-      bairro:bairro.value,
-      dataAusencia:dataAusencia.value,
-      motivo: motivo.value==="Outro"?outroMotivo.value:motivo.value,
-      reposicao:reposicao.value,
-      dataReposicao:dataReposicao.value,
-      matricula:matricula.value,
-      assinatura:getAssinatura()
+      nome: nome.value,
+      cargo: cargo.value,
+      rua: rua.value,
+      numero: numero.value,
+      bairro: bairro.value,
+      dataAusencia: dataAusencia.value,
+      motivo: motivo.value === "Outro" ? outroMotivo.value : motivo.value,
+      reposicao: reposicao.value,
+      dataReposicao: dataReposicao.value,
+      matricula: matricula.value,
+      assinatura: getAssinatura(),
       comprovante: comprovanteBase64
     };
 
-    let comprovanteBase64 = "";
-  if (temComprovante.value === "sim" && arquivoComprovante.files[0]) {
-    const file = arquivoComprovante.files[0];
-    comprovanteBase64 = await new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.readAsDataURL(file);
-    });
-  }
-
-    const res = await fetch("https://script.google.com/macros/s/AKfycbwFhbbN0jyoNCf9BZ860skkDleLZztTZoVwez2x33ka4-iXl-qWNelQ6Sgk13GjuONSXQ/exec",{
-      method:"POST",
-      body:new URLSearchParams({data:JSON.stringify(dados)})
+    const res = await fetch("https://script.google.com/macros/s/AKfycbwFhbbN0jyoNCf9BZ860skkDleLZztTZoVwez2x33ka4-iXl-qWNelQ6Sgk13GjuONSXQ/exec", {
+      method: "POST",
+      body: new URLSearchParams({
+        data: JSON.stringify(dados)
+      })
     });
 
     const json = await res.json();
 
-    if(json.status==="ok"){
+    if (json.status === "ok") {
       window.open(json.url);
     } else {
-      alert("Erro: "+json.mensagem);
+      alert("Erro: " + json.mensagem);
     }
 
-  }catch(e){
+  } catch (e) {
+    console.error(e);
     alert("Erro ao enviar");
   }
 
-  overlay.style.display="none";
+  overlay.style.display = "none";
 }
 
 // PWA
