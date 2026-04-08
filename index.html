@@ -345,7 +345,7 @@ async function enviar(){
       assinatura:getAssinatura()
     };
 
-    const res = await fetch("SEU_WEBAPP_URL_AQUI",{
+    const res = await fetch("https://script.google.com/macros/s/AKfycbzpXILtVdVK19DE8EI_MHdrCqlBtLGj_6_ZpXvYifKLByyKD3QIbegsktVhZyxbb9BCig/exec",{
       method:"POST",
       body:new URLSearchParams({data:JSON.stringify(dados)})
     });
