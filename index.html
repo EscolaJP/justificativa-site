@@ -372,9 +372,22 @@ async function enviar(){
       dataReposicao:dataReposicao.value,
       matricula:matricula.value,
       assinatura:getAssinatura()
+      comprovante: comprovanteBase64
     };
 
-    const res = await fetch("https://script.google.com/macros/s/AKfycbzpXILtVdVK19DE8EI_MHdrCqlBtLGj_6_ZpXvYifKLByyKD3QIbegsktVhZyxbb9BCig/exec",{
+    let comprovanteBase64 = "";
+
+if (temComprovante.value === "sim" && arquivoComprovante.files[0]) {
+  const file = arquivoComprovante.files[0];
+
+  comprovanteBase64 = await new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(file);
+  });
+}
+
+    const res = await fetch("https://script.google.com/macros/s/AKfycbwFhbbN0jyoNCf9BZ860skkDleLZztTZoVwez2x33ka4-iXl-qWNelQ6Sgk13GjuONSXQ/exec",{
       method:"POST",
       body:new URLSearchParams({data:JSON.stringify(dados)})
     });
