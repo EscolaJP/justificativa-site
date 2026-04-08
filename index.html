@@ -158,6 +158,7 @@ label {
 <option value="nao">Não</option>
 </select>
 
+<label id="txtMatricula" class="hidden">Sua Matrícula</label>
 <input id="matricula" placeholder="Matrícula" class="hidden">
 <label>Seu Cargo</label>
 <input id="cargo" placeholder="Ex: Agente Educacional, Professor.....">
@@ -196,6 +197,7 @@ label {
 <option value="sim">Sim</option>
 </select>
 
+<label id="txtComprovante" class="hidden">Selecione uma imagem</label>
 <input type="file" id="arquivoComprovante" class="hidden">
 </div>
 
@@ -227,14 +229,18 @@ label {
 
 <script>
 // UX
-temMatricula.onchange = () =>
+temMatricula.onchange = () => {
   matricula.classList.toggle("hidden", temMatricula.value !== "sim");
+  txtMatricula.classList.toggle("hidden", temMatricula.value !== "sim");
+}
 
 motivo.onchange = () =>
   outroMotivo.classList.toggle("hidden", motivo.value !== "Outro");
 
-temComprovante.onchange = () =>
+temComprovante.onchange = () => {
   arquivoComprovante.classList.toggle("hidden", temComprovante.value !== "sim");
+  txtComprovante.classList.toggle("hidden", temComprovante.value !== "sim");
+}
 
 reposicao.onchange = () => {
   dataReposicao.classList.toggle("hidden", reposicao.value !== "sim");
