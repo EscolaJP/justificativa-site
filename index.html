@@ -199,7 +199,7 @@ label {
 </select>
 
 <label id="txtComprovante" class="hidden">Selecione uma imagem</label>
-<input type="file" id="arquivoComprovante" class="hidden">
+<input type="file" id="arquivoComprovante" class="hidden" accept="image/*">
 </div>
 
 <div class="card">
@@ -354,6 +354,7 @@ function validar(){
   return true;
 }
 
+const TOKEN = "JPI_2026_x7K9@seguro!123";
 // ENVIO 
 async function enviar(){
 
@@ -367,6 +368,12 @@ async function enviar(){
 
     if (temComprovante.value === "sim" && arquivoComprovante.files[0]) {
       const file = arquivoComprovante.files[0];
+
+      if (file.size > 5 * 1024 * 1024) {
+        alert("A imagem deve ter no máximo 5MB");
+        overlay.style.display = "none";
+        return;
+      }
 
       comprovanteBase64 = await new Promise((resolve) => {
         const reader = new FileReader();
@@ -390,12 +397,13 @@ async function enviar(){
       comprovante: comprovanteBase64
     };
 
-    const res = await fetch("https://script.google.com/macros/s/AKfycbwS0T8flqeNGqA0B85EijoC7Fb2od4Uzs3jqVEary5IVWWo5Co7MytaxBX5VYY9Au5m6A/exec", {
-      method: "POST",
-      body: new URLSearchParams({
-        data: JSON.stringify(dados)
-      })
-    });
+    const res = await fetch("SUA_URL_DO_APPS_SCRIPT", {
+  method: "POST",
+  body: new URLSearchParams({
+    token: TOKEN,
+    data: JSON.stringify(dados)
+  })
+});
 
     const json = await res.json();
 
