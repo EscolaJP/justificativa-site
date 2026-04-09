@@ -186,7 +186,8 @@ label {
 <option>Outro</option>
 </select>
 
-<input id="outroMotivo" placeholder="Outro motivo" class="hidden">
+<label id="txtOutroMotivo" class="hidden">Qual o Motivo?</label>
+<input id="outroMotivo" placeholder="Descreva o motivo" class="hidden">
 </div>
 
 <div class="card">
@@ -234,8 +235,10 @@ temMatricula.onchange = () => {
   txtMatricula.classList.toggle("hidden", temMatricula.value !== "sim");
 }
 
-motivo.onchange = () =>
+motivo.onchange = () => {
+  txtOutroMotivo.classList.toggle("hidden", motivo.value !== "Outro");
   outroMotivo.classList.toggle("hidden", motivo.value !== "Outro");
+}
 
 temComprovante.onchange = () => {
   arquivoComprovante.classList.toggle("hidden", temComprovante.value !== "sim");
