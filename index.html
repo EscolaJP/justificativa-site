@@ -390,7 +390,7 @@ async function enviar(){
       comprovante: comprovanteBase64
     };
 
-    const res = await fetch("https://script.google.com/macros/s/AKfycbyyupPAmS1S2RSwkyUaQnceHf5cGH5II1LdVUHeehyjkAAwFEONsrWqinARHFatDEW7KQ/exec", {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbwS0T8flqeNGqA0B85EijoC7Fb2od4Uzs3jqVEary5IVWWo5Co7MytaxBX5VYY9Au5m6A/exec", {
       method: "POST",
       body: new URLSearchParams({
         data: JSON.stringify(dados)
