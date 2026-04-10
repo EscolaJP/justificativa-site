@@ -397,7 +397,7 @@ async function enviar(){
       comprovante: comprovanteBase64
     };
 
-    const res = await fetch("SUA_URL_DO_APPS_SCRIPT", {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbwLuuExE8SJzd4DaC-8esle105nzn-RMjBFl0bK9qbDnb-XgA9-QKQFlyiV3n0v9xtf/exec", {
   method: "POST",
   body: new URLSearchParams({
     token: TOKEN,
