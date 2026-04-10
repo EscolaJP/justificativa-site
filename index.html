@@ -353,8 +353,7 @@ function validar(){
 
   return true;
 }
-
-const TOKEN = "JPI_2026_x7K9@seguro!123";
+  
 // ENVIO 
 async function enviar(){
 
@@ -397,12 +396,12 @@ async function enviar(){
       comprovante: comprovanteBase64
     };
 
-    const res = await fetch("https://script.google.com/macros/s/AKfycbwLuuExE8SJzd4DaC-8esle105nzn-RMjBFl0bK9qbDnb-XgA9-QKQFlyiV3n0v9xtf/exec", {
+    const res = await fetch("/api/enviar", {
   method: "POST",
-  body: new URLSearchParams({
-    token: TOKEN,
-    data: JSON.stringify(dados)
-  })
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(dados)
 });
 
     const json = await res.json();
