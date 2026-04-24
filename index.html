@@ -175,7 +175,7 @@ label {
 
 <div class="card">
 <label>Data de Ausência</label>
-<input id="dataAusencia" placeholder="Ex: 01/04/2026">
+<input id="dataAusencia" placeholder="Ex: 22/04/2026 ou 22/04, 26/04 e 30/04">
 
 <label>Motivo da Ausência</label>
 <select id="motivo">
@@ -247,16 +247,20 @@ temComprovante.onchange = () => {
   arquivoComprovante.classList.toggle("hidden", temComprovante.value !== "sim");
   txtComprovante.classList.toggle("hidden", temComprovante.value !== "sim");
 }
-
+/*
 reposicao.onchange = () => {
   dataReposicao.classList.toggle("hidden", reposicao.value !== "sim");
   txtDataReposicao.classList.toggle("hidden", reposicao.value !== "sim");
 }
+*/
+  
 // CANVAS
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 function resizeCanvas() {
+  const imagemAtual = canvas.toDataURL();
+
   const ratio = window.devicePixelRatio || 1;
   canvas.width = canvas.offsetWidth * ratio;
   canvas.height = canvas.offsetHeight * ratio;
@@ -264,7 +268,12 @@ function resizeCanvas() {
   ctx.setTransform(1,0,0,1,0,0);
   ctx.scale(ratio, ratio);
 
-  desenharLinha();
+  const img = new Image();
+  img.onload = () => {
+    ctx.drawImage(img, 0, 0, canvas.offsetWidth, canvas.offsetHeight);
+    desenharLinha();
+  };
+  img.src = imagemAtual;
 }
 
 function desenharLinha() {
@@ -343,11 +352,12 @@ function validar(){
     alert("Descreva o motivo");
     return false;
   }
-
+/*
   if(reposicao.value === "sim" && !dataReposicao.value){
     alert("Informe a data de reposição");
     return false;
   }
+*/
 
   if(temMatricula.value === "sim" && !matricula.value){
     alert("Informe a matrícula");
@@ -371,7 +381,7 @@ async function enviar(){
     if (temComprovante.value === "sim" && arquivoComprovante.files[0]) {
       const file = arquivoComprovante.files[0];
 
-      if (file.size > 5 * 1024 * 1024) {
+      if (file.size > 10 * 1024 * 1024) {
         alert("A imagem deve ter no máximo 5MB");
         overlay.style.display = "none";
         return;
@@ -392,8 +402,10 @@ async function enviar(){
       bairro: bairro.value,
       dataAusencia: dataAusencia.value,
       motivo: motivo.value === "Outro" ? outroMotivo.value : motivo.value,
-      reposicao: reposicao.value,
-      dataReposicao: dataReposicao.value,
+ /*   reposicao: reposicao.value,
+      dataReposicao: dataReposicao.value, */     
+      reposicao: "nao",
+      dataReposicao: "",
       matricula: matricula.value,
       assinatura: getAssinatura(),
       comprovante: comprovanteBase64
